@@ -48,7 +48,7 @@ let main = () => {
                 collectPoints(id)
                 .then(JSON.parse, errHandler)
                 .then(({poins}) => {
-                    console.log(`Collected ${points} points from active points id ${id}`)
+                    console.log(`Collected ${poins} points from active points id ${id}`)
                 })
                 .catch((err) => {
                     console.error(`Unable to retrieve points for id ${id}\n${err}`)

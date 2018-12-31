@@ -33,9 +33,29 @@ let collectPoints = id => {
     })
 }
 
+let getCurrentPoints = id => {
+    const options = {
+        url: 'https://api.nasapatrola.com/User/GetUserById/' + id,
+        headers: { Authorization: userToken }
+    }
+    return new Promise((resolve, reject) => {
+        request.get(options, (err, resp, body) => {
+            if (err) reject(err)
+            else resolve(body)
+        })
+    })
+}
+
 const errHandler = (err) => console.error(err)
 
 let main = () => {
+    if (argv.id){
+        getCurrentPoints(argv.id)
+            .then(JSON.parse, errHandler)
+            .then(({ username, id, points }) => console.log(`User ${username} (${id}) has ${points} points`), errHandler)
+            .catch(errHandler);
+        return;
+    }
     console.log(`Iteration ran at ${new Date().toUTCString()}`)
     getActivePoints()
         .then(JSON.parse, errHandler)
@@ -44,10 +64,10 @@ let main = () => {
 
             if (nocollect) return
 
-            result.map(({id}) => {
+            result.map(({ id }) => {
                 collectPoints(id)
                 .then(JSON.parse, errHandler)
-                .then(({poins}) => {
+                .then(({ poins }) => {
                     console.log(`Collected ${poins} points from active points id ${id}`)
                 })
                 .catch((err) => {
@@ -58,4 +78,4 @@ let main = () => {
 }
 
 main()
-setInterval(main, 1000 * 60 * 5)
+if (!argv.id) setInterval(main, 1000 * 60 * 5)

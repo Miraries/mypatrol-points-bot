@@ -78,4 +78,4 @@ let main = () => {
 }
 
 main()
-if (!argv.id) setInterval(main, 1000 * 60 * 5)
+if (!argv.id && !argv.nointerval) setInterval(main, 1000 * 60 * 5)

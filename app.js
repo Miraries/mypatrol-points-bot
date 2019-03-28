@@ -3,7 +3,7 @@ const argv = require('yargs').argv
 let userToken = argv.token
 let nocollect = !!argv.nocollect
 
-if (userToken === undefined || userToken.length !== 213)
+if (userToken === undefined)
     throw Error('No valid token provided')
 
 let getActivePoints = () => {
